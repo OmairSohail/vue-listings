@@ -11,7 +11,9 @@
                      label="Email :"
                      label-for="email"   
                   >
-                     <b-form-input id="email" v-model="email" trim></b-form-input>
+                     <b-form-input :state="emailvalidation" id="email" v-model="email" trim></b-form-input>
+                     <b-form-valid-feedback :state="emailvalidation">Perfect !</b-form-valid-feedback>
+                     <b-form-invalid-feedback :state="emailvalidation">Invalid Email</b-form-invalid-feedback>
                   </b-form-group>
                    </b-col>
                     
@@ -23,14 +25,16 @@
                         label="Password :"
                         label-for="password"   
                      >
-                     <b-form-input id="password" v-model="password" trim></b-form-input>
+                     <b-form-input :state="passwordvalidation" id="password" v-model="password" type="password"></b-form-input>
+                     <b-form-valid-feedback :state="passwordvalidation">Perfect !</b-form-valid-feedback>
+                     <b-form-invalid-feedback :state="passwordvalidation">Password should be more than 6 characters</b-form-invalid-feedback>
                   </b-form-group>
                     </b-col>          
                  </b-row>
 
                  <b-row class="my-2">
                     <b-col sm="12">
-                       <b-button variant="info" block="block">Login</b-button>
+                       <b-button variant="info" block="block" @click="login()">Login</b-button>
                     </b-col>
                     
                  </b-row>
@@ -47,6 +51,51 @@ export default {
       return{
          email:null,
          password:null
+      }
+   },
+   methods:{
+      login(){
+         firebase.auth().signInWithEmailAndPassword(this.email,this.password)
+         .then(()=>{
+              this.$router.replace('/listings') 
+         })
+         .catch((err)=>{
+            Toast.fire({
+                     icon: 'danger',
+                     title: err.message,
+                     text: err.code
+                     })
+         })
+      }
+   },
+   computed:{
+      emailvalidation()
+      {
+         if(this.email == null)
+         {
+            return null
+         }
+         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+         if(re.test(String(this.email).toLowerCase()))
+         {
+            return true
+         }else{
+            return false
+         }
+      },
+      passwordvalidation()
+      {
+        if(this.password == null)
+        {
+           return null
+        }
+
+        if(this.password.length > 6)
+        {
+           return true
+        }else{
+           return false
+        }
       }
    }
 }
