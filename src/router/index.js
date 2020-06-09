@@ -5,6 +5,9 @@ import listings from '../views/listings.vue';
 import addListings from '../views/addListings.vue';
 import login from '../views/login.vue';
 import signup from '../views/signup.vue';
+import standard from '../views/standard.vue';
+import featured from '../views/featured.vue';
+import premium from '../views/premium.vue';
 
 
 
@@ -19,9 +22,6 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
@@ -30,7 +30,7 @@ Vue.use(VueRouter)
     component:login,
     beforeEnter:(to,from,next) => {
       const user = firebase.auth().currentUser;
-      if(user)
+      if(!user)
       {
         next()
       }else{
@@ -44,7 +44,7 @@ Vue.use(VueRouter)
     component:signup,
     beforeEnter:(to,from,next) => {
       const user = firebase.auth().currentUser;
-      if(user)
+      if(!user)
       {
         next()
       }else{
@@ -70,6 +70,22 @@ Vue.use(VueRouter)
         next('/login');
       }
     }
+    
+  },
+  {
+    path:'/addlistings/standard',
+    name:'standard',
+    component:standard
+  },
+  {
+    path:'/addlistings/featured',
+    name:'featured',
+    component:featured
+  },
+  {
+    path:'/addlistings/standard',
+    name:'standard',
+    component:standard
   }
 ]
 

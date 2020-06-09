@@ -1,5 +1,7 @@
 <template>
-  <div class="listings"></div>
+  <div class="listings">
+    <navbar/>
+  </div>
 </template>
 
 <script>
