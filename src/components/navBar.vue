@@ -89,6 +89,8 @@ export default {
                      text: err.code
                      })
             })
+
+            this.$store.commit('removeUser')
         }
     }
 

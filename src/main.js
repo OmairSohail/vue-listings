@@ -7,7 +7,8 @@ import router from './router'
 import store from './store'
 import './assets/main.css'
 import firebase from 'firebase'
-
+import VueFirestore from 'vue-firestore'
+import 'firebase/firestore'
 // FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyAv0iXoVETQxjvwc98k6J3jufelJE7UB4Y",
@@ -19,10 +20,29 @@ const firebaseConfig = {
   appId: "1:1065277667255:web:d4cedff0ba7fbd282a9a32"
 };
 
+Vue.use(VueFirestore)
+
 if(!firebase.apps.length)
 firebase.initializeApp(firebaseConfig);
 
 window.firebase = firebase;
+window.firestore = firebase.firestore();
+firebase.auth().onAuthStateChanged((currentUser)=>{
+     if(currentUser)
+     {
+      const user = {
+        id:firebase.auth().currentUser.uid,
+        email:firebase.auth().currentUser.email,
+        username:firebase.auth().currentUser.displayName,
+        photo:firebase.auth().currentUser.photoURL  
+      } 
+    
+      store.dispatch('createUser',user);
+     }
+})
+
+
+
 
 // Sweetalert
 import Swal from 'sweetalert2'
