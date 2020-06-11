@@ -27,6 +27,7 @@ firebase.initializeApp(firebaseConfig);
 
 window.firebase = firebase;
 window.firestore = firebase.firestore();
+window.storage = firebase.storage();
 firebase.auth().onAuthStateChanged((currentUser)=>{
      if(currentUser)
      {
@@ -61,12 +62,22 @@ window.Toast = Swal.mixin({
 })
 
 
+// Vue2-editor
+import Vue2Editor from "vue2-editor";
+Vue.use(Vue2Editor);
 
 
-Vue.config.productionTip = false
+// vue-phone-number-input
+import VuePhoneNumberInput from 'vue-phone-number-input';
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+
+// Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+
+
+Vue.config.productionTip = false;
 
 Vue.component('navbar',require('../src/components/navBar.vue').default);
-
+Vue.component('main-footer',require('../src/components/footer.vue').default);
 
 
 

@@ -7,11 +7,14 @@
        
       <b-card no-body> 
            <b-container>
+             <b-form @submit.prevent="submitListings()">
+
+            
              <b-row>
                 <b-col>
                   <b-form-group label="Bussiness Owner Name :"> 
                       <b-form-input  :state="ownerNameValidation" type="text" class="bg-light" v-model="bussinessOwnerName" placeholder="Owner Name"></b-form-input> 
-                      <b-form-valid-feedback :state="ownerNameValidation">Ok !</b-form-valid-feedback>
+                      <b-form-valid-feedback :state="ownerNameValidation">just Perfect !</b-form-valid-feedback>
                       <b-form-invalid-feedback :state="ownerNameValidation">Name Should be more than 8 characters</b-form-invalid-feedback>
                   </b-form-group>
                 </b-col>
@@ -33,21 +36,30 @@
               <b-row>
                 <b-col>
                   <b-form-group label="Bussiness Phone:"> 
-                      <b-form-input  :state="phoneValidation" type="text" class="bg-light" v-model="bussinessPhone" placeholder="Bussiness Phone No"></b-form-input>
+                      <!-- <b-form-input  :state="phoneValidation" type="text" class="bg-light" v-model="bussinessPhone" placeholder="Bussiness Phone No"></b-form-input>
                       <b-form-valid-feedback :state="phoneValidation">Ok !</b-form-valid-feedback>
-                      <b-form-invalid-feedback :state="phoneValidation">Name Should be more than 8 characters</b-form-invalid-feedback> 
+                      <b-form-invalid-feedback :state="phoneValidation">Name Should be more than 8 characters</b-form-invalid-feedback>  -->
+                      <VuePhoneNumberInput v-model="bussinessPhone" error-color="red"/>
                   </b-form-group>
                 </b-col>
                 <b-col>
                   <b-form-group label="Area Code:"> 
-                      <b-form-input  type="number" class="bg-light" v-model="areaCode" placeholder="Area Code"></b-form-input> 
+                      <b-form-input  :state="areaCodeValidation" type="number" class="bg-light" v-model="areaCode" placeholder="Area Code"></b-form-input> 
+                      <b-form-valid-feedback :state="areaCodeValidation">just Perfect !</b-form-valid-feedback>
+                      <b-form-invalid-feedback :state="areaCodeValidation">
+                          Area code must be 6 digits 
+                      </b-form-invalid-feedback>
                   </b-form-group>
                 </b-col>
               </b-row>
               <b-row>
                 <b-col>
                   <b-form-group label="Bussiness Email :"> 
-                      <b-form-input  type="text" class="bg-light" v-model="bussinessEmail" placeholder="Bussiness Email"></b-form-input> 
+                      <b-form-input  :state="emailValidation" type="text" class="bg-light" v-model="bussinessEmail" placeholder="Bussiness Email"></b-form-input> 
+                      <b-form-valid-feedback :state="emailValidation">just Perfect !</b-form-valid-feedback>
+                      <b-form-invalid-feedback :state="emailValidation">
+                          Invalid email 
+                      </b-form-invalid-feedback>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -56,40 +68,65 @@
                   <b-form-group label="Bussiness Address :"> 
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address1" placeholder="Address - 1"></b-form-input>
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address2" placeholder="Address - 2"></b-form-input>
-                      <b-form-select v-model="bussinessAddress.selectedCity" :options="bussinessAddress.city"></b-form-select>
-                      
+                      <b-form-select v-model="bussinessAddress.selectedCity" :options="bussinessAddress.city" required></b-form-select>          
                   </b-form-group>
                 </b-col>
               </b-row>
                <b-row>
                 <b-col>
                   <b-form-group label="Bussiness Description :"> 
-                      <b-form-textarea  placeholder="Your Bussiness Description" rows="10" max-rows="10" v-model="bussinessDescription"></b-form-textarea>
+                      <vue-editor v-model="bussinessDescription"/>
                   </b-form-group>
                 </b-col>
+              </b-row>
+              <b-row>
+                 <b-col>
+                   <b-form-group label="Add Related Tags :">
+                     <b-form-tags
+                        :state="tagsValidation"
+                        v-model="bussinessTags"
+                        separator=" ,;"
+                        placeholder="Enter tags separated by space, comma or semicolon"
+                        no-add-on-enter
+                        class="mb-2"
+                      ></b-form-tags>
+                      <b-form-valid-feedback :state="tagsValidation">just Perfect !</b-form-valid-feedback>
+                      <b-form-invalid-feedback :state="tagsValidation">
+                          You Must Enter atleast 3 tags 
+                      </b-form-invalid-feedback>
+                   </b-form-group>
+                 </b-col>
               </b-row>
               <b-row>
                 <b-col>
                   <b-form-group label="Upload Image :"> 
-                       <b-form-file v-model="file" class="mt-3" plain></b-form-file>
+                       <b-form-file @change="uploadImage($event)" v-model="file" class="mt-3" plain required></b-form-file>
                   </b-form-group>
                 </b-col>
               </b-row>
 
-              <b-row>
+              <b-row class="">
                 <b-col sm="12">
-                   <b-button variant="primary" @click.prevent="submitListings()">Submit Listing</b-button>
+                   <b-button variant="primary" type="submit">Submit Listing</b-button>
                 </b-col>
               </b-row>
-
+              </b-form> 
            </b-container>
       </b-card>
+
+      <main-footer/>
   </div>
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+import VuePhoneNumberInput from 'vue-phone-number-input';
 export default {
    name:'standard',
+   components:{
+     VueEditor,
+     VuePhoneNumberInput
+   },
    firestore(){
        return{
            listings:firestore.collection('listings')
@@ -117,6 +154,7 @@ export default {
             
          },
          bussinessDescription:'',
+         bussinessTags:[],
          bussinessCategory:null,
          categories:[
             { value: null, text: 'Please select an option' },
@@ -262,8 +300,49 @@ export default {
        }else{
          return false
        }
-     }
-   },
+     },
+     emailValidation()
+      {
+         if(this.bussinessEmail == '')
+         {
+            return null
+         }
+         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+         if(re.test(String(this.bussinessEmail).toLowerCase()))
+         {
+            return true
+         }else{
+            return false
+         }
+      },
+      areaCodeValidation()
+      {
+         if(this.areaCode == '') 
+         {
+            return null;
+         }else if(this.areaCode.length < 6 || this.areaCode.length > 6)
+         {
+           return false;
+         }else{
+           return true;
+         }
+      },
+      tagsValidation(){
+         if(this.bussinessTags.length == 0)
+         {
+           return null
+         }else if(this.bussinessTags.length > 2)
+         {
+            return true
+         }else{
+           return false
+         }
+      },
+
+
+
+
+      },
    methods:{
      submitListings(){
        this.$firestore.listings.add({
@@ -277,9 +356,58 @@ export default {
            city:this.bussinessAddress.selectedCity,
            bussinessDescription:this.bussinessDescription,
            bussinessCategory:this.bussinessCategory,
-           imageUrl:this.file
+           imageUrl:this.file,
+           listingType:'Standard'
        })
+
+       this.bussinessOwnerName = '';
+       this.bussinessName = '';
+       this.bussinessPhone = '';
+       this.bussinessEmail = '';
+       this.bussinessAddress.address1 ='';
+       this.bussinessAddress.address2 = '';
+       this.bussinessAddress.selectedCity = null;
+       this.bussinessDescription = '';
+       this.bussinessTags = [];
+       this.bussinessCategory = null;
+       
+       Toast.fire({
+                     icon: 'success',
+                     title: 'The Form Has Been Submitted',
+                     text: 'Your listing will be processed in sometime'
+                  })
+       
+     },
+     uploadImage(e)
+     {
+        const imagesRef = storage.ref();
+          if(e.target.files[0]){
+        
+          let file = e.target.files[0];
+    
+          var storageRef = firebase.storage().ref('Images/'+ Math.random() + '_'  + file.name);
+    
+          let uploadTask  = storageRef.put(file);
+    
+          uploadTask.on('state_changed', (snapshot) => {
+            
+          }, (error) => {
+             Toast.fire({
+                     icon: 'danger',
+                     title: error,
+                     
+                  })
+          }, () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              this.file = downloadURL;
+            });
+          });
+      }
      }
+     
    }
 }
 </script>

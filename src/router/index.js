@@ -8,7 +8,9 @@ import signup from '../views/signup.vue';
 import standard from '../views/standard.vue';
 import featured from '../views/featured.vue';
 import premium from '../views/premium.vue';
-
+import dashboard from '../views/dashboard.vue';
+import userProfile from '../views/userProfile.vue';
+import userListings from '../views/userListings.vue';
 
 
 Vue.use(VueRouter)
@@ -18,6 +20,34 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component:dashboard,
+    beforeEnter:(to,from,next) => {
+      const user = firebase.auth().currentUser;
+      if(!user)
+      {
+        next()
+      }else{
+        next('/');
+      }
+    },
+    children: [
+      {
+        // UserProfile will be rendered inside User's <router-view>
+        // when /user/:id/profile is matched
+        path: 'profile',
+        component: userProfile
+      },
+      {
+        // UserPosts will be rendered inside User's <router-view>
+        // when /user/:id/posts is matched
+        path: 'listings',
+        component: userListings
+      }
+    ]
   },
   {
     path: '/about',
