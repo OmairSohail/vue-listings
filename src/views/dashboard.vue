@@ -62,10 +62,5 @@ export default {
     transform:translateX(-30%);
 }
 
-.dashboard-render{
-    float:right;
-    width:75%;
-    height:90vh;
-    background-color:blueviolet;
-}
+
 </style>

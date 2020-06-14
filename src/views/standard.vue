@@ -21,7 +21,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <b-form-group label="Bussiness Name :"  :invalid-feedback="bussinessNameinvalidFeedback" :valid-feedback="bussinessNamevalidFeedback" :state="bussinessNamestate"> 
+                  <b-form-group label="Bussiness Title :"  :invalid-feedback="bussinessNameinvalidFeedback" :valid-feedback="bussinessNamevalidFeedback" :state="bussinessNamestate"> 
                       <b-form-input  type="text" class="bg-light " :state="bussinessNamestate" v-model="bussinessName" placeholder="Bussiness Name"></b-form-input> 
                   </b-form-group>
                 </b-col>
@@ -101,6 +101,7 @@
                 <b-col>
                   <b-form-group label="Upload Image :"> 
                        <b-form-file @change="uploadImage($event)" v-model="file" class="mt-3" plain required></b-form-file>
+                       <b-progress :value="value" max="100" show-progress animated class="mt-3"></b-progress>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -268,7 +269,8 @@ export default {
               
             ]
           }
-         ]
+         ],
+         imgUploadProgress:null
      }
    },
    computed:{
@@ -338,17 +340,20 @@ export default {
            return false
          }
       },
-
-
-
+      value(){
+         return this.imgUploadProgress
+      }
 
       },
    methods:{
      submitListings(){
+      const useremail = firebase.auth().currentUser.email;
+   
        this.$firestore.listings.add({
            ownerName:this.bussinessOwnerName,
            bussinessName:this.bussinessName,
            bussinessPhone:this.bussinessPhone,
+           bussinessTags:this.bussinessTags,
            areaCode:this.areaCode,
            bussinessEmail:this.bussinessEmail,
            address1:this.bussinessAddress.address1,
@@ -357,7 +362,9 @@ export default {
            bussinessDescription:this.bussinessDescription,
            bussinessCategory:this.bussinessCategory,
            imageUrl:this.file,
-           listingType:'Standard'
+           listingType:'Standard',
+           userEmail:useremail,
+           dateAdded:new Date().toDateString()
        })
 
        this.bussinessOwnerName = '';
@@ -370,7 +377,8 @@ export default {
        this.bussinessDescription = '';
        this.bussinessTags = [];
        this.bussinessCategory = null;
-       
+       this.file = '';
+       this.imgUploadProgress = 0;
        Toast.fire({
                      icon: 'success',
                      title: 'The Form Has Been Submitted',
@@ -390,7 +398,8 @@ export default {
           let uploadTask  = storageRef.put(file);
     
           uploadTask.on('state_changed', (snapshot) => {
-            
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.imgUploadProgress = progress;
           }, (error) => {
              Toast.fire({
                      icon: 'danger',

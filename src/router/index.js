@@ -27,7 +27,7 @@ Vue.use(VueRouter)
     component:dashboard,
     beforeEnter:(to,from,next) => {
       const user = firebase.auth().currentUser;
-      if(!user)
+      if(user)
       {
         next()
       }else{

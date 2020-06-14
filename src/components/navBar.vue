@@ -9,7 +9,7 @@
         <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
             <b-nav-item><router-link to="/" class="text-light">Home</router-link></b-nav-item>
-            <b-nav-item><router-link to="/dashboard" class="text-light" v-if="isLoggedin">Dashboard</router-link></b-nav-item>
+            <b-nav-item><router-link to="/dashboard/profile" class="text-light" v-if="isLoggedin">Dashboard</router-link></b-nav-item>
             <b-nav-item><router-link to="/listings" class="text-light">Listings</router-link></b-nav-item>
             <b-nav-item><router-link to="/addlistings" class="text-light">Add Listings</router-link></b-nav-item>
         </b-navbar-nav>
@@ -92,6 +92,7 @@ export default {
             })
 
             this.$store.commit('removeUser')
+            this.$router.replace('/');
         }
     }
 

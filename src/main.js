@@ -20,7 +20,10 @@ const firebaseConfig = {
   appId: "1:1065277667255:web:d4cedff0ba7fbd282a9a32"
 };
 
-Vue.use(VueFirestore)
+Vue.use(VueFirestore,{
+  key: 'id',         // the name of the property. Default is '.key'.
+  enumerable: true 
+})
 
 if(!firebase.apps.length)
 firebase.initializeApp(firebaseConfig);
@@ -66,12 +69,13 @@ window.Toast = Swal.mixin({
 import Vue2Editor from "vue2-editor";
 Vue.use(Vue2Editor);
 
-
 // vue-phone-number-input
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
-// Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+// Vue-Carousel
+import VueCarousel from 'vue-carousel';
+Vue.use(VueCarousel);
 
 
 Vue.config.productionTip = false;
