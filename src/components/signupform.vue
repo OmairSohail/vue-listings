@@ -63,6 +63,11 @@
 <script>
 export default {
      name:'signupform',
+     firestore(){
+        return{
+           users:firestore.collection('Users')
+        }
+     },
      data(){
         return{
            username:null,
@@ -70,7 +75,9 @@ export default {
            password:null,
            confirmpassword:null,
            terms:false,
-           state:null
+           state:null,
+           users:this.users
+           
         }
      },
      computed:{
@@ -136,9 +143,20 @@ export default {
         createUser(){
              if(this.terms == true)
              {
-                
+                 this.$firestore.users.add({
+                        
+                        Username:this.username,
+                        Email:this.email,
+                        ProfileImage:'',
+                       
+                    })
                firebase.auth().createUserWithEmailAndPassword(this.email,this.password)
                .then(()=>{
+                    
+
+                   
+
+
                    this.username = null;
                    this.email = null;
                    this.password = null;
@@ -149,6 +167,8 @@ export default {
                      icon: 'success',
                      title: 'Account Has Been Created'
                      }) 
+
+
                })
                .catch((err) => {
                    Toast.fire({

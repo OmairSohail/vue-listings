@@ -13,6 +13,10 @@ export default new Vuex.Store({
      },
      removeUser(state){
         state.user = ''
+     },
+     addProfileImage(state,payload)
+     {
+        state.user.photo = payload
      }
   },
   actions: {

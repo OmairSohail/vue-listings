@@ -2,7 +2,7 @@
   <div class="userProfile pl-5">
        <b-card border-variant="light" header="Profile" class="profilecard text-center">
           <b-card-body>
-             <b-form>
+             <b-form @submit.prevent="updateProfile()">
                <b-row>
                  <b-col>
                    <b-form-group>
@@ -43,11 +43,17 @@
 <script>
 export default {
     name:'userProfile',
+    firestore(){
+      return{
+        users:firestore.collection('Users')
+      }
+    },
     data(){
       return{
         file:null, 
         imgUploadProgress:0,
-        pImage:null
+        pImage:null,
+        users:this.users
       }
     },
     computed:{
@@ -55,7 +61,7 @@ export default {
       {
         if(this.file == null)
         {
-            return this.pImage = "../assets/profile-image-icon.png"
+            return this.pImage = this.$store.state.user.photo
         }else
         {
             this.pImage = this.file
@@ -65,6 +71,12 @@ export default {
       value()
       {
         return this.imgUploadProgress
+      },
+      userId()
+      {
+        const fusers = this.users.filter(x => x.Email == this.$store.state.user.email)
+        
+        return fusers[0].id
       }
     },
     methods:{
@@ -94,9 +106,28 @@ export default {
                   })
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
               this.file = downloadURL;
+              
             });
           });
       }
+     },
+     updateProfile()
+     {
+         this.$firestore.users.doc(this.userId).update({
+              ProfileImage:this.file
+          })
+        
+        Toast.fire({
+                     icon: 'success',
+                     title: 'Profile Updated Successfully',   
+                  })
+
+        this.file = null
+        this.imgUploadProgress = 0
+        this.pImage = null
+                
+        this.$store.commit('addProfileImage',this.file)
+      
      }
     }
 }

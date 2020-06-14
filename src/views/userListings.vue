@@ -16,7 +16,7 @@
 
                        <b-container fluid>
                          <b-button variant="danger" class="mr-3" @click="deleteListing(listing.id)">Delete Listing</b-button>
-                         <b-button variant="info">Edit Listing</b-button>
+                         <b-button variant="info" @click="editListing(listing.id)">Edit Listing</b-button>
                        </b-container>
                     </b-card-footer>
               </b-card>
