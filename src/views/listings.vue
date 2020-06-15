@@ -19,7 +19,7 @@
                      </div>   
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
                        <b-container fluid>
-                          <b-button variant="secondary">Read More...</b-button>
+                          <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
                     
               </b-card>
@@ -67,7 +67,10 @@ export default {
       }
     },
     methods:{
-     
+      goToListing(id)
+      { 
+        this.$router.replace(`/listings/${id}`)
+      }
     }
 }
 </script>

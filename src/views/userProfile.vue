@@ -6,7 +6,7 @@
                <b-row>
                  <b-col>
                    <b-form-group>
-                    <b-img :src="profileImage" width="150" height="150" rounded="circle" alt="Profile Image" center></b-img> 
+                    <b-img :src="pImage" width="150" height="150" rounded="circle" alt="Profile Image" center></b-img> 
                     <b-form-file @change="uploadImage($event)" v-model="file" plain></b-form-file>
                     <b-progress :value="value" max="100" show-progress animated class="mt-3"></b-progress>
                   </b-form-group>
@@ -52,32 +52,28 @@ export default {
       return{
         file:null, 
         imgUploadProgress:0,
-        pImage:null,
+        pImage:this.currentUser.ProfileImage,
         users:this.users
       }
     },
     computed:{
-      profileImage()
-      {
-        if(this.file == null)
-        {
-            return this.pImage = this.$store.state.user.photo
-        }else
-        {
-            this.pImage = this.file
-            return this.pImage;
-        }
-      },
       value()
       {
         return this.imgUploadProgress
       },
-      userId()
+      currentUser()
       {
-        const fusers = this.users.filter(x => x.Email == this.$store.state.user.email)
+        const cuser = this.users.filter(x => x.Email == this.$store.state.user.email)
         
-        return fusers[0].id
-      }
+        return cuser[0];
+      },
+      // profileImage()
+      // {
+      
+      //       const u = this.users.filter(x => x.Email == this.$store.state.user.email);
+      //       return u[0].ProfileImage;
+            
+      // },
     },
     methods:{
       uploadImage(e)
@@ -113,7 +109,7 @@ export default {
      },
      updateProfile()
      {
-         this.$firestore.users.doc(this.userId).update({
+         this.$firestore.users.doc(this.currentUser.id).update({
               ProfileImage:this.file
           })
         

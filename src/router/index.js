@@ -11,7 +11,7 @@ import premium from '../views/premium.vue';
 import dashboard from '../views/dashboard.vue';
 import userProfile from '../views/userProfile.vue';
 import userListings from '../views/userListings.vue';
-
+import singleListing from '../views/singleListing.vue';
 
 Vue.use(VueRouter)
 
@@ -85,7 +85,13 @@ Vue.use(VueRouter)
   {
     path: '/listings',
     name: 'listings',
-    component:listings
+    component:listings,
+    
+  },
+  {
+    path:'/listings/:id',
+    name:'singleListing',
+    component:singleListing
   },
   {
     path: '/addlistings',
