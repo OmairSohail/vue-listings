@@ -17,8 +17,8 @@
                     <b-nav vertical class="w-100 text-center">
                     <b-nav-item active><router-link class="sidebar-nav-link text-light" to="/dashboard/profile">Profile</router-link></b-nav-item>
                     <b-nav-item><router-link class="sidebar-nav-link text-light" to="/dashboard/Listings">Listings</router-link></b-nav-item>
-                    <b-nav-item><router-link class="sidebar-nav-link text-light" to="/dashboard/profile">Profile</router-link></b-nav-item>
-                    <b-nav-item><router-link class="sidebar-nav-link text-light" to="/dashboard/profile">Profile</router-link></b-nav-item>
+                    <!-- <b-nav-item><router-link class="sidebar-nav-link text-light" to="/dashboard/profile">Profile</router-link></b-nav-item>
+                    <b-nav-item><router-link class="sidebar-nav-link text-light" to="/dashboard/profile">Profile</router-link></b-nav-item> -->
                 </b-nav>
                 </b-container>
             </div>

@@ -77,7 +77,7 @@ export default {
            terms:false,
            state:null,
            users:this.users
-           
+      
         }
      },
      computed:{
@@ -130,7 +130,6 @@ export default {
           {
              return null
           }
-
           if(this.confirmpassword === this.password)
           {
              return true
@@ -143,20 +142,14 @@ export default {
         createUser(){
              if(this.terms == true)
              {
-                 this.$firestore.users.add({
-                        
+                 this.$firestore.users.add({      
                         Username:this.username,
                         Email:this.email,
-                        ProfileImage:'',
-                       
+                        ProfileImage:'',    
                     })
                firebase.auth().createUserWithEmailAndPassword(this.email,this.password)
                .then(()=>{
                     
-
-                   
-
-
                    this.username = null;
                    this.email = null;
                    this.password = null;
@@ -167,17 +160,13 @@ export default {
                      icon: 'success',
                      title: 'Account Has Been Created'
                      }) 
-
-
                })
                .catch((err) => {
                    Toast.fire({
                      icon: 'danger',
                      title: err.message
                      }) 
-               })  
-               
-               
+               })       
              }else{
                Swal.fire(
                   'Error',
@@ -185,7 +174,6 @@ export default {
                   'warning'
                   )
              }
-             
         }
      }
 }

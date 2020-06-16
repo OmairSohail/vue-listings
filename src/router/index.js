@@ -12,6 +12,7 @@ import dashboard from '../views/dashboard.vue';
 import userProfile from '../views/userProfile.vue';
 import userListings from '../views/userListings.vue';
 import singleListing from '../views/singleListing.vue';
+import editlisting from '../views/editListing.vue';
 
 Vue.use(VueRouter)
 
@@ -45,7 +46,11 @@ Vue.use(VueRouter)
         // UserPosts will be rendered inside User's <router-view>
         // when /user/:id/posts is matched
         path: 'listings',
-        component: userListings
+        component: userListings,
+      },
+      {
+        path:'edit/:id',
+        component:editlisting
       }
     ]
   },
@@ -93,6 +98,7 @@ Vue.use(VueRouter)
     name:'singleListing',
     component:singleListing
   },
+  
   {
     path: '/addlistings',
     name: 'addlistings',
