@@ -11,13 +11,16 @@
                      <div class="card-info">
                        <b-avatar class="card-avatar" variant="info" size="70" src="https://placekitten.com/300/300"></b-avatar>
                        <div>
+                        
                         <span class="card-username">{{listing.ownerName}}</span>
                         <br>
                         <span class="card-date">{{listing.dateAdded}}</span>
+                        <b-form-rating inline="true" value="5" v-model="rating" @click="rateListing"></b-form-rating>
                        </div>  
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
                      </div>   
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
+                      
                        <b-container fluid>
                           <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
@@ -36,13 +39,18 @@
                      <div class="card-info">
                        <b-avatar class="card-avatar" variant="info" size="70" src="https://placekitten.com/300/300"></b-avatar>
                        <div>
+                        
                         <span class="card-username">{{listing.ownerName}}</span>
                         <br>
                         <span class="card-date">{{listing.dateAdded}}</span>
+                        <br>
+                        <b-form-rating inline value="5" v-model="rating" @click="rateListing"></b-form-rating>
                        </div>  
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
+                       
                      </div>   
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
+                     
                        <b-container fluid>
                           <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
@@ -68,6 +76,7 @@
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
                      </div>   
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
+                      <b-form-rating inline value="5" v-model="rating" @click="rateListing"></b-form-rating>
                        <b-container fluid>
                           <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
@@ -96,8 +105,12 @@ export default {
     data()
     {
       return{
-        listings:this.listings
+        listings:this.listings,
+        rating:null
       }
+    },
+    methods:{
+      
     },
     computed:{
       StandardListings()
@@ -131,6 +144,7 @@ export default {
    display:grid;
    grid-template-columns: repeat(3,auto);
    place-items: center;
+   justify-content: center;
 }
 
 .grid-container-listings{
