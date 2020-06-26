@@ -149,7 +149,9 @@ export default {
            imageUrl:this.file,
            listingType:'Featured',
            userEmail:useremail,
-           dateAdded:new Date().toDateString()
+           dateAdded:new Date().toDateString(),
+           likes:0,
+           dislikes:0
        })
 
        this.bussinessOwnerName = '';

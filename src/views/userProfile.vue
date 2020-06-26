@@ -6,7 +6,8 @@
                <b-row>
                  <b-col>
                    <b-form-group>
-                    <b-img :src="currentUser.ProfileImage" width="150" height="150" rounded="circle" alt="Profile Image" center></b-img> 
+                     <!-- v-bind:src="profileImage" -->
+                    <b-img  width="150" height="150" rounded="circle" alt="Profile Image" center></b-img> 
                     <b-form-file @change="uploadImage($event)" v-model="file" plain></b-form-file>
                     <b-progress :value="value" max="100" show-progress animated class="mt-3"></b-progress>
                   </b-form-group>
@@ -18,7 +19,6 @@
                      <b-form-input :state="usernameValidation" type="text" placeholder="Username" v-model="username"></b-form-input>
                      <b-form-invalid-feedback :state="usernameValidation">Username must be more than 6 Characters</b-form-invalid-feedback>
                      <b-form-valid-feedback :state="usernameValidation">just Perfect !</b-form-valid-feedback>
-                     
                   </b-form-group>
                  </b-col>
                </b-row>
@@ -43,7 +43,7 @@
 
              <hr class="my-4 bg-dark">
              <h6>Change Your Email .... </h6>
-             <b-button @click="resetEmail()" v-if="emailSent == false">Send Email Reset Request</b-button>
+             <b-button @click="resetEmail">Send Email Reset Request</b-button>
 
              <hr class="my-4 bg-dark">
              <h4 class="">Reset Your Password </h4>
@@ -185,7 +185,20 @@ export default {
     },
     resetEmail()
     {
-         
+       var auth = firebase.auth();
+       var emailAddress = auth.currentUser.email;
+
+       auth.sendPasswordResetEmail(emailAddress).then(function() {
+           Toast.fire({
+                     icon: 'success',
+                     title: 'Email Sent Successfully',   
+                  })
+        }).catch(function(error) {
+          Toast.fire({
+                     icon: 'error',
+                     title: error.message,   
+                  })
+        });
     },
     resetPassword()
     {

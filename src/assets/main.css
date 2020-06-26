@@ -5,3 +5,6 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.btn{
+    border-radius: 0 !important;
+}

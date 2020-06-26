@@ -6,11 +6,10 @@
             <div class="px-3 py-2">
                 <b-container>
                     <b-row>
-                        <b-col sm="12"><b-img v-bind="mainProps" src="../assets/profile-image-icon.png" rounded="circle" alt="Profile Image" center></b-img></b-col>
+                        <b-col sm="12"><b-img v-bind="mainProps" :src="currentUser.ProfileImage" rounded="circle" alt="Profile Image" center></b-img></b-col>
                     </b-row>
-                    
-                    <p class="text-center mt-2">Username</p>
-                    <p class="text-center">Email</p>
+                    <p class="text-center mt-2">{{currentUser.Fullname}}</p>
+                    <p class="text-center">{{currentUser.Email}}</p>
                 </b-container>
                 
                 <b-container>
@@ -42,10 +41,23 @@
 
 <script>
 export default {
+   firestore(){
+       return{
+           users:firestore.collection('Users')
+       }
+   },
    data(){
        return{
-           mainProps: { width: 150, height: 150 }
+           mainProps: { width: 150, height: 150 },
+           users:this.users
        }
+   },
+   computed:{
+      currentUser()
+      {
+          const u = this.users.filter(x => x.Email == this.$store.state.user.email)
+          return u[0];
+      }
    }
 }
 </script>
@@ -61,6 +73,4 @@ export default {
     opacity: 0;
     transform:translateX(-30%);
 }
-
-
 </style>

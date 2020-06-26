@@ -15,14 +15,28 @@
                         <span class="card-username">{{listing.ownerName}}</span>
                         <br>
                         <span class="card-date">{{listing.dateAdded}}</span>
-                        <b-form-rating inline="true" value="5" v-model="rating" @click="rateListing"></b-form-rating>
+                        <!-- <b-form-rating inline="true" value="5" v-model="standardrating" @click="rateListing(listing.id,listing.listingType)"></b-form-rating> -->
                        </div>  
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
                      </div>   
+                     <b-row>
+                         <b-col class="text-right">
+                           Likes 
+                           <span v-if="liked == true">:</span>
+                           <b-icon icon="hand-thumbs-up" class="like-icon" variant="dark" @click="userLiked(listing.id)" v-if="liked == false"></b-icon>
+                            {{listing.likes | number('0a')}} 
+                         </b-col>
+                         <b-col class="text-left">
+                           Dislikes
+                            <span v-if="disliked == true">:</span>
+                           <b-icon icon="hand-thumbs-down" class="dislike-icon"  variant="dark" @click="userDisliked(listing.id)" v-if="disliked == false"></b-icon>
+                           {{listing.dislikes | number('0a')}}
+                         </b-col>
+                       </b-row>
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
                       
                        <b-container fluid>
-                          <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
+                          <b-button variant="secondary" block @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
                     
               </b-card>
@@ -44,15 +58,29 @@
                         <br>
                         <span class="card-date">{{listing.dateAdded}}</span>
                         <br>
-                        <b-form-rating inline value="5" v-model="rating" @click="rateListing"></b-form-rating>
+                        <!-- <b-form-rating inline value="5" v-model="featuredrating" @click="rateListing(listing.id,listing.listingType)"></b-form-rating> -->
                        </div>  
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
                        
-                     </div>   
+                     </div>  
+                     <b-row>
+                         <b-col class="text-right">
+                           Likes 
+                           <span v-if="liked == true">:</span>
+                           <b-icon icon="hand-thumbs-up" class="like-icon" variant="dark" @click="userLiked(listing.id)" v-if="liked == false"></b-icon>
+                            {{listing.likes | number('0a')}} 
+                         </b-col>
+                         <b-col class="text-left">
+                           Dislikes
+                            <span v-if="disliked == true">:</span>
+                           <b-icon icon="hand-thumbs-down" class="dislike-icon"  variant="dark" @click="userDisliked(listing.id)" v-if="disliked == false"></b-icon>
+                           {{listing.dislikes | number('0a')}}
+                         </b-col>
+                       </b-row> 
                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
                      
                        <b-container fluid>
-                          <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
+                          <b-button variant="secondary" block @click="goToListing(listing.id)">Read More...</b-button>
                        </b-container>
                     
               </b-card>
@@ -74,13 +102,26 @@
                         <span class="card-date">{{listing.dateAdded}}</span>
                        </div>  
                        <div class="m-0 card-email">{{listing.bussinessEmail}}</div>
-                     </div>   
-                      <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}} </span></div>
-                      <b-form-rating inline value="5" v-model="rating" @click="rateListing"></b-form-rating>
+                        <!-- <b-form-rating inline value="5" v-model="premiumrating" @change="rateListing(listing.id,listing.listingType)"></b-form-rating> -->
+                       </div>  
+                       <b-row>
+                         <b-col class="text-right">
+                           Likes 
+                           <span v-if="liked == true">:</span>
+                           <b-icon icon="hand-thumbs-up" class="like-icon" variant="dark" @click="userLiked(listing.id)" v-if="liked == false"></b-icon>
+                            {{listing.likes | number('0a')}} 
+                         </b-col>
+                         <b-col class="text-left">
+                           Dislikes
+                            <span v-if="disliked == true">:</span>
+                           <b-icon icon="hand-thumbs-down" class="dislike-icon"  variant="dark" @click="userDisliked(listing.id)" v-if="disliked == false"></b-icon>
+                           {{listing.dislikes | number('0a')}}
+                         </b-col>
+                       </b-row> 
+                       <div class="p-2"><span class="tags" v-for="tag in listing.bussinessTags" :key="tag">{{tag}}</span></div>
                        <b-container fluid>
-                          <b-button variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
-                       </b-container>
-                    
+                          <b-button block variant="secondary" @click="goToListing(listing.id)">Read More...</b-button>
+                       </b-container>      
               </b-card>
             </slide>
           </carousel> 
@@ -106,11 +147,9 @@ export default {
     {
       return{
         listings:this.listings,
-        rating:null
+        liked:false,
+        disliked:false
       }
-    },
-    methods:{
-      
     },
     computed:{
       StandardListings()
@@ -121,7 +160,7 @@ export default {
       FeaturedListings()
       {
         const fl = this.listings.filter(x => x.listingType == 'Featured')
-        return fl
+        return fl;
       },
       PremiumListings()
       {
@@ -133,7 +172,29 @@ export default {
       goToListing(id)
       { 
         this.$router.replace(`/listings/${id}`)
-      }
+      },
+      userLiked(id)
+      {
+          this.liked = true;
+          const selectedListing = this.listings.filter(x => x.id == id)
+          let ls = selectedListing[0].likes;
+          console.log(ls)
+          this.$firestore.listings.doc(id).update({
+              likes: ls+1      
+          }) 
+      },
+      userDisliked(id)
+      {
+        
+          this.disliked = true;
+          const selectedListing = this.listings.filter(x => x.id == id)
+          let ls = selectedListing[0].dislikes;
+          console.log(ls)
+         
+          this.$firestore.listings.doc(id).update({
+              dislikes: ls+1      
+          }) 
+      }  
     }
 }
 </script>
@@ -144,7 +205,7 @@ export default {
    display:grid;
    grid-template-columns: repeat(3,auto);
    place-items: center;
-   justify-content: center;
+   justify-content: space-between;
 }
 
 .grid-container-listings{
@@ -165,6 +226,27 @@ export default {
 
 .listings-card{
   max-width:400px;
+}
+.dislike-icon
+{
+  transition:all 0.2s ease;
+}
+
+.dislike-icon:hover
+{
+  font-size:1.5rem;
+  cursor: pointer;
   
+}
+
+.like-icon
+{
+  transition:all 0.2s ease;
+}
+
+.like-icon:hover
+{
+  font-size:1.5rem;
+  cursor: pointer;
 }
 </style>

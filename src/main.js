@@ -69,6 +69,10 @@ window.Toast = Swal.mixin({
 import Vue2Editor from "vue2-editor";
 Vue.use(Vue2Editor);
 
+// Vue2-Filters
+import Vue2Filters from 'vue2-filters'
+Vue.use(Vue2Filters)
+
 // vue-phone-number-input
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';

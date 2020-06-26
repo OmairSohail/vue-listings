@@ -125,9 +125,9 @@ Vue.use(VueRouter)
     component:featured
   },
   {
-    path:'/addlistings/standard',
-    name:'standard',
-    component:standard
+    path:'/addlistings/premium',
+    name:'premium',
+    component:premium
   }
 ]
 

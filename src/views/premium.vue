@@ -124,7 +124,7 @@ import { VueEditor } from "vue2-editor";
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import {listingData} from '../listingData';
 export default {
-   name:'premium',
+   name:'Standard',
    mixins:[listingData],
    components:{
      VueEditor,
@@ -149,7 +149,9 @@ export default {
            imageUrl:this.file,
            listingType:'Premium',
            userEmail:useremail,
-           dateAdded:new Date().toDateString()
+           dateAdded:new Date().toDateString(),
+           likes:0,
+           dislikes:0
        })
 
        this.bussinessOwnerName = '';
