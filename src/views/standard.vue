@@ -151,7 +151,8 @@ export default {
            userEmail:useremail,
            dateAdded:new Date().toDateString(),
            likes:0,
-           dislikes:0
+           dislikes:0,
+           comments:[]
        })
 
        this.bussinessOwnerName = '';

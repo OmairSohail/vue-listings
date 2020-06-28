@@ -108,7 +108,13 @@
 
               <b-row class="">
                 <b-col sm="12">
-                   <b-button variant="primary" type="submit">Submit Listing</b-button>
+                   <!-- <b-button variant="primary" type="submit">Submit Listing</b-button> -->
+                   <PayPal
+                    amount="2.5"
+                    currency="USD"
+                    :client="paypal"
+                    env="sandbox">
+                  </PayPal>
                 </b-col>
               </b-row>
               </b-form> 
@@ -123,12 +129,23 @@
 import { VueEditor } from "vue2-editor";
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import {listingData} from '../listingData';
+import PayPal from 'vue-paypal-checkout';
 export default {
    name:'featured',
    mixins:[listingData],
    components:{
      VueEditor,
-     VuePhoneNumberInput
+     VuePhoneNumberInput,
+     PayPal
+   },
+   data(){
+     return{
+       paypal:{      
+        sandbox: 'ActFokNVlqBMvSvdYSM5s5b2ZOXMu_1J9rWrTGSkiIyGcbeDrjS21_6_wE9qSVTyfL82ok7Er1Hpvt48',
+        production: ''
+        
+       }
+     }
    },
    methods:{
      submitListings(){
@@ -151,7 +168,8 @@ export default {
            userEmail:useremail,
            dateAdded:new Date().toDateString(),
            likes:0,
-           dislikes:0
+           dislikes:0,
+           comments:[]
        })
 
        this.bussinessOwnerName = '';

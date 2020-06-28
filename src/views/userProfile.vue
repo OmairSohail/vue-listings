@@ -7,7 +7,7 @@
                  <b-col>
                    <b-form-group>
                      <!-- v-bind:src="profileImage" -->
-                    <b-img  width="150" height="150" rounded="circle" alt="Profile Image" center></b-img> 
+                    <b-img  width="150" height="150" :src="profileImage()" rounded="circle" alt="Profile Image" center></b-img> 
                     <b-form-file @change="uploadImage($event)" v-model="file" plain></b-form-file>
                     <b-progress :value="value" max="100" show-progress animated class="mt-3"></b-progress>
                   </b-form-group>
@@ -40,25 +40,27 @@
                  </b-col>
                </b-row>        
              </b-form>
-
+         
              <hr class="my-4 bg-dark">
-             <h6>Change Your Email .... </h6>
-             <b-button @click="resetEmail">Send Email Reset Request</b-button>
+             <h6>Reset Your Email .... </h6>
+             <b-form class="">
+               <b-form-group>
+                 <b-form-input :state="emailValidation" type="text" v-model="email"></b-form-input>
+                  <b-form-valid-feedback :state="emailValidation">Just Perfect !</b-form-valid-feedback>
+                  <b-form-invalid-feedback :state="emailValidation">Invalid Email</b-form-invalid-feedback>
+               </b-form-group>
+              
+               <b-form-group>
+                   <b-button @click="resetEmail">Send Email Reset Request</b-button>
+               </b-form-group>
+             </b-form>
+            
 
              <hr class="my-4 bg-dark">
              <h4 class="">Reset Your Password </h4>
              <div class="my-3"> 
-              <b-form class="" @submit.prevent="resetPassword()">
-               <b-form-group label="Password:">
-                 <b-form-input type="password" v-model="password"></b-form-input>
-               </b-form-group>
-               <b-form-group label="Confirm Password:">
-                 <b-form-input type="password" v-model="confirmpassword"></b-form-input>
-               </b-form-group>
-               <b-form-group>
-                 <b-button type="submit" variant="warning">Reset Password</b-button>
-               </b-form-group>
-             </b-form>
+              
+             <b-button variant="warning" @click="resetPassword()">Reset Password</b-button>
              </div>
           </b-card-body>
        </b-card>
@@ -81,8 +83,7 @@ export default {
         users:this.users,
         username:null,
         fullname:null,
-        password:null,
-        confirmpassword:null,
+        email:null,
         emailSent:false
       }
     },
@@ -96,13 +97,7 @@ export default {
         const cuser = this.users.filter(x => x.Email == this.$store.state.user.email)  
         return cuser[0];
       },
-      profileImage()
-      {
-      
-            const u = this.users.filter(x => x.Email == this.$store.state.user.email);
-            return u[0].ProfileImage;
-            
-      },
+     
       usernameValidation()
       {
         if(this.username == null)
@@ -126,92 +121,115 @@ export default {
         }else{
           return true
         }
-      }
+      },
+      emailValidation()
+       {
+          if(this.email == '')
+          {
+             return null
+          }
+          const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+          if(re.test(String(this.email).toLowerCase()))
+          {
+             return true
+          }else{
+             return false
+          }
+       },
+     
     },
     methods:{
-      uploadImage(e)
-     {
-        const imagesRef = storage.ref();
-          if(e.target.files[0]){
-        
-          let file = e.target.files[0];
-    
-          var storageRef = firebase.storage().ref('ProfileImages/'+ this.$store.state.user.email + '_'  + file.name);
-    
-          let uploadTask  = storageRef.put(file);
-    
-          uploadTask.on('state_changed', (snapshot) => {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            this.imgUploadProgress = progress;
-          }, (error) => {
-             Toast.fire({
-                     icon: 'danger',
-                     title: error,   
-                  })
-          }, () => {
-               Toast.fire({
-                     icon: 'success',
-                     title: 'Image Uploaded Successfully',   
-                  })
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-              this.file = downloadURL;
-              
-            });
-          });
-      }
-     },
-     updateProfile()
-     {
-         this.$firestore.users.doc(this.currentUser.id).update({
-              Username:this.username,
-              ProfileImage:this.file,
-              Fullname:this.fullname
-          })
-        
-        Toast.fire({
-                     icon: 'success',
-                     title: 'Profile Updated Successfully',   
-                  })
-
-        this.$store.commit('addProfileImage',this.currentUser.ProfileImage)
-
-
-        // this.file = null
-        this.pImage = null
-                
-       
+       profileImage()
+      {
       
-     }
-    },
-    resetEmail()
-    {
-       var auth = firebase.auth();
-       var emailAddress = auth.currentUser.email;
+            const u = this.users.filter(x => x.Email == this.$store.state.user.email);
+            return u[0].ProfileImage;
+            
+      },
+      uploadImage(e)
+      {
+          const imagesRef = storage.ref();
+            if(e.target.files[0]){
+          
+            let file = e.target.files[0];
+      
+            var storageRef = firebase.storage().ref('ProfileImages/'+ this.$store.state.user.email + '_'  + file.name);
+      
+            let uploadTask  = storageRef.put(file);
+      
+            uploadTask.on('state_changed', (snapshot) => {
+              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              this.imgUploadProgress = progress;
+            }, (error) => {
+              Toast.fire({
+                      icon: 'danger',
+                      title: error,   
+                    })
+            }, () => {
+                Toast.fire({
+                      icon: 'success',
+                      title: 'Image Uploaded Successfully',   
+                    })
+              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                this.file = downloadURL;
+                
+              });
+            });
+        }
+      },
+      updateProfile()
+      {
+          this.$firestore.users.doc(this.currentUser.id).update({
+                Username:this.username,
+                ProfileImage:this.file,
+                Fullname:this.fullname
+            })
+          
+          Toast.fire({
+                      icon: 'success',
+                      title: 'Profile Updated Successfully',   
+                    })
 
-       auth.sendPasswordResetEmail(emailAddress).then(function() {
+          this.$store.commit('addProfileImage',this.currentUser.ProfileImage)
+
+          profileImage();
+          // this.file = null
+          this.pImage = null
+      },
+      resetEmail()
+      {
+        const user = firebase.auth().currentUser;
+        user.updateEmail("user@example.com").then(function() {
            Toast.fire({
-                     icon: 'success',
-                     title: 'Email Sent Successfully',   
-                  })
+                  type: 'success',
+                  title: 'Your email has been reset'
+                })
         }).catch(function(error) {
           Toast.fire({
-                     icon: 'error',
-                     title: error.message,   
-                  })
+                  type: 'error',
+                  title: error.message
+                })
         });
-    },
-    resetPassword()
-    {
-        const ue = firebase.auth().currentUser.email;        
-          firebase.auth().sendPasswordResetEmail(ue).then(() =>  {
-            this.emailSent = true;
-               Toast.fire({
-                type: 'success',
-                title: 'Email sent'
-              })
-          }).catch((error) =>  {
-              console.log(error);
-          });
+      },
+      resetPassword()
+      {
+        
+          var auth = firebase.auth();
+          var emailAddress = firebase.auth().currentUser.email;
+
+          auth.sendPasswordResetEmail(emailAddress).then(() => {
+            Toast.fire({
+                  type: 'success',
+                  title: 'Password Reset Email sent'
+                })
+          }).catch(function(error) {
+            Toast.fire({
+                  type: 'error',
+                  title: error.message
+                })
+          }); 
+
+      }
     }
 }
 </script>

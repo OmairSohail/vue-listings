@@ -9,7 +9,7 @@
                      
                     <!-- <b-card-body v-html="listing.bussinessDescription"></b-card-body>  -->
                      <div class="card-info">
-                       <b-avatar class="card-avatar" variant="info" size="70" src="https://placekitten.com/300/300"></b-avatar>
+                       <b-avatar class="card-avatar" variant="info" size="70" :src="getImage(listing.userEmail)"></b-avatar>
                        <div>
                         
                         <span class="card-username">{{listing.ownerName}}</span>
@@ -51,7 +51,7 @@
                      
                     <!-- <b-card-body v-html="listing.bussinessDescription"></b-card-body>  -->
                      <div class="card-info">
-                       <b-avatar class="card-avatar" variant="info" size="70" src="https://placekitten.com/300/300"></b-avatar>
+                       <b-avatar class="card-avatar" variant="info" size="70" :src="getImage(listing.userEmail)"></b-avatar>
                        <div>
                         
                         <span class="card-username">{{listing.ownerName}}</span>
@@ -95,7 +95,7 @@
                      
                     <!-- <b-card-body v-html="listing.bussinessDescription"></b-card-body>  -->
                      <div class="card-info">
-                       <b-avatar class="card-avatar" variant="info" size="70" src="https://placekitten.com/300/300"></b-avatar>
+                       <b-avatar class="card-avatar" variant="info" size="70" :src="getImage(listing.userEmail)"></b-avatar>
                        <div>
                         <span class="card-username">{{listing.ownerName}}</span>
                         <br>
@@ -136,7 +136,8 @@ export default {
     name:'listings',
     firestore(){
       return{
-        listings:firestore.collection('listings'),    
+        listings:firestore.collection('listings'), 
+        users:firestore.collection('Users')   
       }
     },
     components:{
@@ -148,7 +149,8 @@ export default {
       return{
         listings:this.listings,
         liked:false,
-        disliked:false
+        disliked:false,
+        users:this.users
       }
     },
     computed:{
@@ -166,7 +168,8 @@ export default {
       {
         const pl = this.listings.filter(x => x.listingType == 'Premium')
         return pl;
-      }
+      },
+      
     },
     methods:{
       goToListing(id)
@@ -194,7 +197,15 @@ export default {
           this.$firestore.listings.doc(id).update({
               dislikes: ls+1      
           }) 
+      },
+      getImage(email)
+      {
+         const get = this.users.filter(x => x.Email == email)
+         return get[0].ProfileImage
       }  
+    },
+    directives:{
+      
     }
 }
 </script>

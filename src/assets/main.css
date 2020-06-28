@@ -8,3 +8,10 @@
 .btn{
     border-radius: 0 !important;
 }
+
+.VueCarousel-slide{
+    max-width:450px;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+}
