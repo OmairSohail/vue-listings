@@ -2,16 +2,16 @@
   <div class="navbar">
   <nav>  
    <div>     
-    <b-navbar toggleable="md" type="dark" variant="info">
-        <b-navbar-brand href="#">Omair Listings</b-navbar-brand>
+    <b-navbar toggleable="md" type="dark" variant="light">
+        <b-navbar-brand href="#"><b-img src="../assets/logo.png" height="70"></b-img></b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-            <b-nav-item><router-link to="/" class="text-light">Home</router-link></b-nav-item>
-            <b-nav-item><router-link to="/dashboard/profile" class="text-light" v-if="isLoggedin">Dashboard</router-link></b-nav-item>
-            <b-nav-item><router-link to="/listings" class="text-light">Listings</router-link></b-nav-item>
-            <b-nav-item><router-link to="/addlistings" class="text-light">Add Listings</router-link></b-nav-item>
+            <b-nav-item><router-link to="/" class="">Home</router-link></b-nav-item>
+            <b-nav-item><router-link to="/dashboard/profile" class="" v-if="isLoggedin">Dashboard</router-link></b-nav-item>
+            <b-nav-item><router-link to="/listings" class="">Listings</router-link></b-nav-item>
+            <b-nav-item><router-link to="/addlistings" class="">Add Listings</router-link></b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

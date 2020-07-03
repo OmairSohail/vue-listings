@@ -68,7 +68,18 @@
                   <b-form-group label="Bussiness Address :"> 
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address1" placeholder="Address - 1"></b-form-input>
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address2" placeholder="Address - 2"></b-form-input>
-                      <b-form-select v-model="bussinessAddress.selectedCity" :options="bussinessAddress.city" required></b-form-select>          
+                      <b-form-group label="Country">
+                         <b-form-select v-model="bussinessAddress.selectedCountry" required>
+                         <b-form-select-option :value="null">Please select your Country</b-form-select-option> 
+                         <b-form-select-option v-for="country in bussinessAddress.countries" :key="country.name">{{country.name}}</b-form-select-option>
+                         </b-form-select>
+                      </b-form-group> 
+                     <b-form-group label="City">
+                         <b-form-select v-model="bussinessAddress.selectedCity" required>
+                          <b-form-select-option :value="null">Please select your City</b-form-select-option> 
+                           <b-form-select-option v-for="country in bussinessAddress.countries" :key="country.capital">{{country.capital}}</b-form-select-option>
+                        </b-form-select>
+                     </b-form-group>          
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -105,7 +116,6 @@
                   </b-form-group>
                 </b-col>
               </b-row>
-
               <b-row class="">
                 <b-col sm="12">
                    <b-button variant="primary" type="submit">Submit Listing</b-button>
@@ -114,7 +124,6 @@
               </b-form> 
            </b-container>
       </b-card>
-
       <main-footer/>
   </div>
 </template>
@@ -143,6 +152,7 @@ export default {
            bussinessEmail:this.bussinessEmail,
            address1:this.bussinessAddress.address1,
            address2:this.bussinessAddress.address2,
+           country:this.bussinessAddress.selectedCountry,
            city:this.bussinessAddress.selectedCity,
            bussinessDescription:this.bussinessDescription,
            bussinessCategory:this.bussinessCategory,
@@ -154,7 +164,6 @@ export default {
            dislikes:0,
            comments:[]
        })
-
        this.bussinessOwnerName = '';
        this.bussinessName = '';
        this.bussinessPhone = '';
@@ -172,9 +181,11 @@ export default {
                      title: 'The Form Has Been Submitted',
                      text: 'Your listing will be processed in sometime'
                   })
-       
      },
-   }
+   },
+  
+   
+  
 }
 </script>
 

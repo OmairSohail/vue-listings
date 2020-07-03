@@ -81,6 +81,9 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 
+// vue-resource
+import VueResource from 'vue-resource'
+Vue.use(VueResource);
 
 Vue.config.productionTip = false;
 

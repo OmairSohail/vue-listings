@@ -67,7 +67,6 @@ export default {
     name:'singleListing',
     data(){
         return{
-
           listingsID:this.$route.params.id,
           listings:this.listings,
           users:this.users,

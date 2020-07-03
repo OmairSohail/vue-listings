@@ -49,7 +49,51 @@
             </slide>
           </carousel> 
         </div>
-        <h2 class="text-center">Featured Listings</h2>
+              
+    </section> 
+
+    <section class="benefits bg-info pt-5">
+      <b-container>
+        <b-row>
+           <b-col>
+              <b-card class="benefit-card">
+                 <b-card-title class="text-center">
+                    <b-icon icon="collection-fill" font-scale="5"></b-icon>
+                 </b-card-title>
+                 <b-card-text class="text-center">
+                   <h2>Effient Access</h2>
+                   <p>Access Bussinesses From All Over The World</p>
+                 </b-card-text>
+              </b-card>
+           </b-col>
+           <b-col>
+             <b-card class="benefit-card">
+                 <b-card-title class="text-center">
+                   <b-icon icon="graph-up" font-scale="5"></b-icon>
+                 </b-card-title>
+                 <b-card-text class="text-center">
+                   <h2>Grow You Bussiness</h2>
+                   <p>Excellent Platform For Growing You Bussiness And Gain Audience</p>
+                 </b-card-text>
+              </b-card>
+           </b-col>
+           <b-col>
+              <b-card class="benefit-card">
+                 <b-card-title class="text-center">
+                    <b-icon icon="shop" font-scale="5"></b-icon>
+                 </b-card-title>
+                 <b-card-text class="text-center">
+                   <h2>Digital Marketing</h2>
+                   <p>Marketing for your bussiness Digitally</p>
+                 </b-card-text>
+              </b-card>
+           </b-col>
+        </b-row>
+      </b-container>
+    </section>
+
+    <section class="pt-3">
+      <h2 class="text-center">Featured Listings</h2>
         <div class="f-listings px-5">
           <carousel :navigationEnabled="true" :per-page="3" >
              <slide v-for="listing in this.featuredlistings" :key="listing.id">
@@ -86,8 +130,9 @@
               </b-card>
             </slide>
           </carousel> 
-        </div>       
-    </section> 
+        </div> 
+    </section>
+  <main-footer/>
   </div>
 </template>
 
@@ -98,19 +143,23 @@ export default {
   name: 'Home',
   firestore(){
     return{
-      listings:firestore.collection('listings')
-    }
+          listings:firestore.collection('listings')
+          }
   },
   data(){
     return{
-       listings:this.listings,
-       
+       listings:this.listings,   
     }
   },
   computed:{
     premiumlistings()
     {
       const p = this.listings.filter(x => x.listingType === 'Premium')
+      return p;
+    },
+    featuredlistings()
+    {
+      const p = this.listings.filter(x => x.listingType === 'Featured')
       return p;
     }
   },
@@ -132,7 +181,7 @@ export default {
 
 .listingshowcase{
   width:100%;
-  min-height:90vh;
+  min-height:70vh;
 }
 
 .listings-card{
@@ -155,5 +204,13 @@ export default {
   color:white;
   border-radius: 15px;
   margin:0.5rem 0.3rem;
+}
+
+.benefits{
+   min-height:50vh;
+}
+
+.benefit-card{
+height:320px;
 }
 </style>

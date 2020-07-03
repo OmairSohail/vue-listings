@@ -1,4 +1,5 @@
 export const listingData = {
+  
     firestore(){
         return{
             listings:firestore.collection('listings')
@@ -17,13 +18,9 @@ export const listingData = {
               address1:'',
               address2:'',
               selectedCity:null,
-              city:[
-                 { value: null, text: 'Please select an City' },
-                 { value:'Karachi', text:'Karachi'},
-                 { value:'Lahore', text:'Lahore'},
-                 { value:'Islamabad', text:'Islamabad'},     
-              ],
-             
+              selectedCountry:null,
+              city:null,
+              countries:null
           },
           bussinessDescription:'',
           bussinessTags:[],
@@ -216,7 +213,7 @@ export const listingData = {
        }
  
        },
-       methods:{
+    methods:{
         uploadImage(e)
         {
            const imagesRef = storage.ref();
@@ -247,5 +244,18 @@ export const listingData = {
              });
          }
         }
+       },
+       created()
+       { 
+          // GET /someUrl
+          this.$http.get('https://restcountries.eu/rest/v2/all?fields=name;capital;').then( (response) => {
+        
+            // get body data
+            this.bussinessAddress.countries = response.body;
+          }, ( response ) => {
+            // error callback
+            console.log(response)
+          });
        }
+       
 }

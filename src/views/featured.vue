@@ -68,7 +68,18 @@
                   <b-form-group label="Bussiness Address :"> 
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address1" placeholder="Address - 1"></b-form-input>
                       <b-form-input  type="text" class="bg-light " v-model="bussinessAddress.address2" placeholder="Address - 2"></b-form-input>
-                      <b-form-select v-model="bussinessAddress.selectedCity" :options="bussinessAddress.city" required></b-form-select>          
+                      <b-form-group label="Country">
+                         <b-form-select v-model="bussinessAddress.selectedCountry" required>
+                         <b-form-select-option :value="null">Please select your Country</b-form-select-option> 
+                         <b-form-select-option v-for="country in bussinessAddress.countries" :key="country.name">{{country.name}}</b-form-select-option>
+                         </b-form-select>
+                      </b-form-group> 
+                     <b-form-group label="City">
+                         <b-form-select v-model="bussinessAddress.selectedCity" required>
+                          <b-form-select-option :value="null">Please select your City</b-form-select-option> 
+                           <b-form-select-option v-for="country in bussinessAddress.countries" :key="country.capital">{{country.capital}}</b-form-select-option>
+                        </b-form-select>
+                     </b-form-group>                
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -109,12 +120,12 @@
               <b-row class="">
                 <b-col sm="12">
                    <!-- <b-button variant="primary" type="submit">Submit Listing</b-button> -->
-                   <PayPal
+                    <!-- <PayPal
                     amount="2.5"
                     currency="USD"
                     :client="paypal"
                     env="sandbox">
-                  </PayPal>
+                  </PayPal> -->
                 </b-col>
               </b-row>
               </b-form> 
@@ -129,22 +140,22 @@
 import { VueEditor } from "vue2-editor";
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import {listingData} from '../listingData';
-import PayPal from 'vue-paypal-checkout';
+
 export default {
    name:'featured',
    mixins:[listingData],
    components:{
      VueEditor,
      VuePhoneNumberInput,
-     PayPal
+     
    },
    data(){
      return{
-       paypal:{      
-        sandbox: 'ActFokNVlqBMvSvdYSM5s5b2ZOXMu_1J9rWrTGSkiIyGcbeDrjS21_6_wE9qSVTyfL82ok7Er1Hpvt48',
-        production: ''
+      //  paypal:{      
+      //   sandbox: 'ActFokNVlqBMvSvdYSM5s5b2ZOXMu_1J9rWrTGSkiIyGcbeDrjS21_6_wE9qSVTyfL82ok7Er1Hpvt48',
+      //   production: ''
         
-       }
+      //  }
      }
    },
    methods:{
@@ -160,6 +171,7 @@ export default {
            bussinessEmail:this.bussinessEmail,
            address1:this.bussinessAddress.address1,
            address2:this.bussinessAddress.address2,
+           country:this.bussinessAddress.selectedCountry,
            city:this.bussinessAddress.selectedCity,
            bussinessDescription:this.bussinessDescription,
            bussinessCategory:this.bussinessCategory,

@@ -1,21 +1,19 @@
 <template>
 <div class="main-footer mt-4">
-    
-        <b-jumbotron bg-variant="info" text-variant="white">
-            <template v-slot:header>Omair Listings</template>
-
-            <template v-slot:lead class="text-center">
-              This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-              featured content or information.
-            </template>
-
-            <hr class="my-4">
-
-            <p class="text-center">
-              All Rights Reserved 2020
-            </p>
-          </b-jumbotron>
-      
+    <section class="bg-light border-top border-info py-3">
+           <b-container class=" footer-content">
+             <b-img src="../assets/logo.png"></b-img>
+             <p class="mt-5">All Rights Reserved 2020</p>
+           </b-container>
+         
+           <b-nav class="footer-nav" >
+            <b-nav-item active ><router-link to="/">Home</router-link></b-nav-item>
+            <b-nav-item><router-link to="/listings">Listings</router-link></b-nav-item>
+            <b-nav-item><router-link to="/addlistings">Add Listings</router-link></b-nav-item>
+            <b-nav-item><router-link to="/about">About</router-link></b-nav-item>
+            <b-nav-item ><router-link to="/contactus">Contact Us</router-link></b-nav-item>
+          </b-nav>
+    </section>
 </div>
 </template>
 
@@ -25,6 +23,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+section{
+  width:100%;
+  min-height:15vh;
+  position:relative;
+}
+.footer-nav{
+  position: absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+}
 
+.footer-content{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

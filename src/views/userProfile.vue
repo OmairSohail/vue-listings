@@ -1,6 +1,6 @@
 <template>
   <div class="userProfile pl-5">
-       <b-card border-variant="light" header="Profile" class="profilecard text-center">
+       <b-card border-variant="light" header="Profile" header-tag="h1" class="profilecard text-center">
           <b-card-body>
              <b-form @submit.prevent="updateProfile()">
                <b-row>
